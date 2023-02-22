@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { URL } from '../App';
-const SignUp = () => {
+
+const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
-    name: '',
     password: '',
   });
 
@@ -20,8 +20,7 @@ const SignUp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(`${URL}api/v1/users/signup`, {
-        name: formData.name,
+      const res = await axios.post(`${URL}api/v1/users/login`, {
         email: formData.email,
         password: formData.password,
       });
@@ -45,16 +44,7 @@ const SignUp = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="column">
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </div>
+
         <div className="column">
           <label htmlFor="password">Password:</label>
           <input
@@ -66,11 +56,11 @@ const SignUp = () => {
           />
         </div>
         <button className="btn" type="submit">
-          Sign Up
+          Log in
         </button>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;

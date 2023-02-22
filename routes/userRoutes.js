@@ -38,10 +38,15 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new Error('Please provide email and password!');
+  }
   try {
     const userData = await User.findOne({
-      email: req.body.email,
+      email,
     });
 
     if (!userData) throw new Error('Email not found');
@@ -78,6 +83,19 @@ router.get('/login', async (req, res) => {
       message: err.message,
     });
   }
+});
+
+router.get('/logout', async (req, res) => {
+  res
+    .cookie('token', 'logout', {
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    })
+    .status(200)
+    .json({
+      status: 'success',
+    });
 });
 
 router.get('/', async (req, res) => {
